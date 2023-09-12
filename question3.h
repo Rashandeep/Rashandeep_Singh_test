@@ -9,6 +9,7 @@ class node {
         public:
             int key;
             int val;
+            time_t timestamp;
             node* next;
             node* prev;
             node(int _key, int _val);

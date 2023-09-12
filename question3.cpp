@@ -6,6 +6,7 @@ using namespace std;
 node::node (int _key, int _val){
     key = _key;
     val = _val;
+    timestamp = time(nullptr);
 }
 
 // function to add a node after head of DLL
@@ -26,14 +27,33 @@ void delNode(node* newnode){
     next1->prev = prev1;
 }
 
+// function to check if the cache is expired or not
+void checkExp(unordered_map<int, node*> &m, int expirationTime){
+    // get the current time
+    time_t currentTime = time(nullptr);
+    // iterate over every cache node present and if current time minus the 
+    // time when cache was created is greater than expiration time then delete the cache
+    for(auto it:m){
+        node* n = it.second;
+        if (currentTime - n->timestamp > expirationTime){
+            m.erase(n->key);
+            delNode(n);
+        }
+    }
+}
+
 // function to get a value of the key provided
-int get(int key, unordered_map<int, node*> &m, node* head) {
+int get(int key, unordered_map<int, node*> &m, node* head, int exp) {
+    // check if is any cache or node that got expired
+    checkExp(m, exp);
+    
     // it checks if value is present in DLL and correspondinly in map
     // if not then return -1
     if(m.find(key)!=m.end()){
         node* temp = m[key];
         delNode(temp);
         m.erase(key);
+        temp->timestamp = time(nullptr);
         addNode(temp, head);
         m[key] = temp;
         return temp->val;
@@ -42,7 +62,10 @@ int get(int key, unordered_map<int, node*> &m, node* head) {
 }
 
 // function to add key-value pair in DLL
-void put(int key, int value, node* tail, node* head, unordered_map<int, node*> &m, int cap) {
+void put(int key, int value, node* tail, node* head, unordered_map<int, node*> &m, int cap, int exp) {
+    
+    checkExp(m, exp);
+    
     // if the key is already present then update the value of it.
     // I am doing it by deleting the node first and removing it from map and then further adding to the front of DLL
     if(m.find(key)!=m.end()){
@@ -61,7 +84,10 @@ void put(int key, int value, node* tail, node* head, unordered_map<int, node*> &
 }
 
 // method to print the cache 
-void print(unordered_map<int, node*> m){
+void print(unordered_map<int, node*> m, int exp){
+    
+    checkExp(m, exp);
+    
     for(auto it:m){
         cout << it.first << " " << it.second->val << "\n";
     }
@@ -79,6 +105,11 @@ int main() {
     cout << "Enter the cap\n";
     cin >> cap;
     unordered_map<int, node*> m;
+
+    int exp;
+    cout << "Enter expiration time in sec for the cache\n";
+    cin >> exp;
+
     
     while(true){
         int option;
@@ -100,15 +131,15 @@ int main() {
         
         switch(option) {
             case 1:
-                put(key, value, tail, head, m, cap);
+                put(key, value, tail, head, m, cap, exp);
                 break;
             case 2:
                 int v;
-                v = get(getKey, m, head);
+                v = get(getKey, m, head, exp);
                 cout << v << "\n";
                 break;
             case 3:
-                print(m);
+                print(m, exp);
                 break;
             case 4:
                 return 0;
