@@ -21,8 +21,15 @@ else if iterator for both the strings have reached till end, we will return that
 ## Question 3:
 At Ormuco, we want to optimize every bits of software we write. Your goal is to write a new library that can be integrated to the Ormuco stack. Dealing with network issues everyday, latency is our biggest problem. Thus, your challenge is to write a new Geo Distributed LRU (Least Recently Used) cache with time expiration.
 ### Answer 3:
-In this, we have to implement least recently used cache. The path that I choose is that I have created a doubly linked list. I have also created a hashmap to store the reference of the node linked to the key. 
+In this, we have to implement least recently used cache. The path that I choose is that I have created a doubly linked list. I have also created a hashmap to store the reference of the node linked to the key.
+
+Each node of DLL contains key, value and time at which that node will be created.
+Each time the node is added or updated the time is set to the current time. 
+
 I have created 3 functions i.e. put, get and print the values.
-For put, i will update the value if key already exists. Otherwise, add the key value to the front of DLL. If the capacity is reached, remove the least recently used i.e. delete the last node from the DLL.
-For get, i have checked that if the key is present in map, then return the value. Also, delete the node and add it to the front as it is the newly used cache. If the key is not present in the map, then return -1.
+
+Before applying every operation, i have checked that for every node present in the DLL if "currentTime" - "time of node created" > expiration time then I will remove that node from DLL. After this, it will perform the specified operation.
+
+For put, i will update the value if key already exists and also update the time to current time. Otherwise, add the key-value to the front of DLL with current time. If the capacity is reached, remove the least recently used i.e. delete the last node from the DLL.
+For get, i have checked that if the key is present in map, then return the value. Now, this node is used recently so I have set the time to current time. Also, delete the node and add it to the front as it is the newly used cache. If the key is not present in the map, then return -1.
 For print, it will simply iterate over the map and print the key-value pair.
