@@ -18,7 +18,7 @@ string checkOverlap(double x1, double x2, double x3, double x4){
     }
         
     // if x3 lies between x1 and x2 or x4 lies between x1 and x2 then the lines overlap
-    if((x3>x1 && x3<x2) || (x4>x1 && x4<x2))
+    if((x3>x1 && x3<x2))
         ans = "lines overlap";
     else
         ans = "lines donot overlap";
