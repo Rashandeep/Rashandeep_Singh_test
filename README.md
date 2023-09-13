@@ -1,7 +1,7 @@
 # Ormuco
 Please find the code for all the 3 questions. The code is written in C++ language and appropriate comments have been added. Also, the codes include various test cases.
 
-// For question 1 and question 2, I have asked user for the input and based on it the program will return the output. Additionally, it will also run the test cases as written in the program.
+For question 1 and question 2, I have asked user for the input and based on it the program will return the output. Additionally, it will also run the test cases as written in the program.
 
 ## Question 1:
 Your goal for this question is to write a program that accepts two lines (x1,x2) and (x3,x4) on the x-axis and returns whether they overlap. As an example, (1,5) and (2,6) overlaps but not (1,5) and (6,8). 
